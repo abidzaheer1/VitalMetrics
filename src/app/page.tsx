@@ -65,7 +65,7 @@ export default function Home() {
           >
             <h2 className="text-xl font-semibold mb-2">About</h2>
             <p className="text-sm text-muted-foreground">
-              This BMI calculator is a project created by Ayesha, a Master of Technology student at KBN University.
+              This BMI calculator is a project created by Ayesha, a Master of Technology student at VTU Kalaburgi.
               It aims to provide a simple and effective way to understand your body mass index and receive personalized
               fitness advice.
             </p>
