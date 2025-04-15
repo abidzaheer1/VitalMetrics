@@ -4,6 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+import {
+  ChartContainer,
+  Chart,
+  ChartBar,
+  ChartCategoryAxis,
+  ChartContent,
+  ChartDescription,
+  ChartLegend,
+  ChartLine,
+  ChartPlot,
+  ChartTitle,
+  ChartView,
+} from "@/components/ui/chart";
 
 const BMIGauge = ({ bmi }: { bmi: number }) => {
   const getGaugeColor = (bmi: number) => {
@@ -50,6 +63,25 @@ const BMICalculatorResults = () => {
   const [bmiCategory, setBmiCategory] = useState("");
   const [healthyWeightRange, setHealthyWeightRange] = useState("");
 
+    const data = [
+        {
+            "BMI Category": "Underweight",
+            "BMI": 17.5,
+        },
+        {
+            "BMI Category": "Normal",
+            "BMI": 22,
+        },
+        {
+            "BMI Category": "Overweight",
+            "BMI": 27,
+        },
+        {
+            "BMI Category": "Obese",
+            "BMI": 32,
+        }
+    ]
+
 
   useEffect(() => {
     // Determine BMI category
@@ -87,6 +119,21 @@ const BMICalculatorResults = () => {
               <li>BMI Prime: {(bmi / 25).toFixed(1)}</li>
             </ul>
           </div>
+
+          <ChartContainer config={{BMI: {label: "BMI"}}}>
+            <ChartTitle>BMI Categories</ChartTitle>
+            <ChartDescription>A bar chart displaying BMI ranges.</ChartDescription>
+            <ChartView>
+              <ChartPlot>
+                <ChartBar dataKey="BMI" data={data} />
+                <ChartLine dataKey="BMI" data={data} />
+              </ChartPlot>
+              <ChartCategoryAxis dataKey="BMI Category" data={data} />
+            </ChartView>
+            <ChartLegend />
+          </ChartContainer>
+
+
           <Button onClick={() => router.push(`/fitness-advice?bmi=${bmi}&gender=${gender}`)} className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent">
             Get Fitness Advice
           </Button>
