@@ -6,20 +6,24 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import {
   ChartContainer,
-  Chart,
-  ChartBar,
-  ChartCategoryAxis,
-  ChartContent,
-  ChartDescription,
   ChartLegend,
-  ChartLine,
-  ChartPlot,
   ChartTitle,
-  ChartView,
+  ChartStyle,
 } from "@/components/ui/chart";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
+
 
 const BMIGauge = ({ bmi }: { bmi: number }) => {
-  const getGaugeColor = (bmi: number) => {
+  const getGaugeColor = (bmi: number ) => {
     if (bmi < 18.5) return '#FFCDD2'; // Underweight
     if (bmi < 25) return '#A5D6A7'; // Normal
     if (bmi < 30) return '#FFEB3B'; // Overweight
@@ -27,32 +31,53 @@ const BMIGauge = ({ bmi }: { bmi: number }) => {
   };
 
   const gaugeColor = getGaugeColor(bmi);
-  const percentage = Math.min(bmi, 40) / 40; // Cap at 40 for gauge display
 
-  return (
-    <div className="relative w-64 h-32">
-      <svg className="transform -rotate-90" width="200" height="100" viewBox="0 0 200 100">
-        <path
-          d="M100,95 A95,95 0 0,1 5,5"
-          stroke="#F0F0F0"
-          strokeWidth="10"
-          fill="none"
-        />
-        <path
-          d={`M100,95 A95,95 0 0,1 ${100 + 95 * Math.cos(Math.PI * percentage)},${95 - 95 * Math.sin(Math.PI * percentage)}`}
-          stroke={gaugeColor}
-          strokeWidth="10"
-          fill="none"
-        />
-        {/* Needle */}
-        <line x1="100" y1="95" x2={100 + 80 * Math.cos(Math.PI * percentage)} y2={95 - 80 * Math.sin(Math.PI * percentage)} stroke="#333" strokeWidth="3" />
-        <circle cx="100" cy="95" r="4" fill="#333" />
-      </svg>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <span className="text-xl font-bold">{bmi.toFixed(1)}</span>
-      </div>
-    </div>
-  );
+    return (
+        <div className="w-64">
+            <div className="relative">
+                <svg width="100%" height="100%" viewBox="0 0 180 120">
+                    {/* Background Arc */}
+                    <path
+                        d="M 20 100 A 60 60, 0, 0, 1, 160 100"
+                        stroke="#F0F0F0"
+                        strokeWidth="12"
+                        fill="none"
+                    />
+                    {/* Value Arc */}
+                    <path
+                        d="M 20 100 A 60 60, 0, 0, 1, :x :y"
+                        stroke={gaugeColor}
+                        strokeWidth="12"
+                        fill="none"
+                        style={{
+                            strokeDasharray: `${bmi > 35 ? 100 : (bmi / 35) * 100}, 100`,
+                            strokeDashoffset: 0
+                        }}
+                    />
+                    {/* Needle */}
+                    <line
+                        x1="90"
+                        y1="100"
+                        x2={90 + 50 * Math.cos((1 - (bmi > 35 ? 1 : bmi / 35)) * Math.PI / 2)}
+                        y2={100 - 50 * Math.sin((1 - (bmi > 35 ? 1 : bmi / 35)) * Math.PI / 2)}
+                        stroke="#333"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        style={{ transformOrigin: '90px 100px' }}
+                    />
+                    {/* Central Pivot */}
+                    <circle cx="90" cy="100" r="4" fill="#333" />
+                    {/* BMI Value Text */}
+                    <text x="90" y="50" textAnchor="middle" fontSize="24" fontWeight="bold" fill="#555">
+                        {bmi.toFixed(1)}
+                    </text>
+                    <text x="90" y="70" textAnchor="middle" fontSize="12" fill="#777">
+                        BMI
+                    </text>
+                </svg>
+            </div>
+        </div>
+    );
 };
 
 const BMICalculatorResults = () => {
@@ -122,15 +147,16 @@ const BMICalculatorResults = () => {
 
           <ChartContainer config={{BMI: {label: "BMI"}}}>
             <ChartTitle>BMI Categories</ChartTitle>
-            <ChartDescription>A bar chart displaying BMI ranges.</ChartDescription>
-            <ChartView>
-              <ChartPlot>
-                <ChartBar dataKey="BMI" data={data} />
-                <ChartLine dataKey="BMI" data={data} />
-              </ChartPlot>
-              <ChartCategoryAxis dataKey="BMI Category" data={data} />
-            </ChartView>
-            <ChartLegend />
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="BMI Category" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="BMI" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
           </ChartContainer>
 
 
