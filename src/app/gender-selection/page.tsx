@@ -3,6 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from 'next/navigation';
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
 
 export default function GenderSelection() {
   const router = useRouter();
@@ -12,8 +25,13 @@ export default function GenderSelection() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Card className="w-2/3">
+    <motion.div
+      className="flex flex-col items-center justify-center min-h-screen py-2"
+      initial="hidden"
+      animate="visible"
+      variants={cardVariants}
+    >
+      <Card className="w-2/3 max-w-md">
         <CardHeader>
           <CardTitle>Select Your Gender</CardTitle>
           <CardDescription>
@@ -29,6 +47,7 @@ export default function GenderSelection() {
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }
+

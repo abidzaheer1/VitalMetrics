@@ -6,6 +6,19 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
 
 export default function BMICalculator() {
   const [feet, setFeet] = useState("");
@@ -33,7 +46,12 @@ export default function BMICalculator() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <motion.div
+      className="flex flex-col items-center justify-center min-h-screen py-2"
+      initial="hidden"
+      animate="visible"
+      variants={cardVariants}
+    >
       <Card className="w-2/3 max-w-md">
         <CardHeader>
           <CardTitle>BMI Calculator</CardTitle>
@@ -77,6 +95,6 @@ export default function BMICalculator() {
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }

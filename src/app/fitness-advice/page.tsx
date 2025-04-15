@@ -4,6 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation';
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
 
 interface FitnessAdvice {
   category: string;
@@ -48,7 +61,12 @@ export default function FitnessAdvice() {
   }, [bmi, gender]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <motion.div
+      className="flex flex-col items-center justify-center min-h-screen py-2"
+      initial="hidden"
+      animate="visible"
+      variants={cardVariants}
+    >
       <h1 className="text-3xl font-semibold mb-4 text-primary">
         Fitness Advice
       </h1>
@@ -79,6 +97,6 @@ export default function FitnessAdvice() {
       <Button className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent" onClick={() => window.history.back()}>
         Back to Calculator
       </Button>
-    </div>
+    </motion.div>
   );
 }

@@ -7,11 +7,13 @@ import { Monitor } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen py-2"
+    >
       <Card className="w-2/3 max-w-md">
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
           <CardTitle className="text-2xl sm:text-3xl font-bold tracking-tight">
-            VitalMetrics
+            VitalMetrics by Ayesha
           </CardTitle>
           <Monitor className="h-6 w-6 text-primary" />
         </CardHeader>
