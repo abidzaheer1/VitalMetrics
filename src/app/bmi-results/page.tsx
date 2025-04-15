@@ -60,16 +60,16 @@ const BMICalculatorResults = () => {
     else category = "Obese";
     setBmiCategory(category);
 
-    // Calculate and set the healthy weight range
-    // Assuming a height of 1.75 meters for demonstration purposes
-    const minHealthyWeight = (18.5 * Math.pow(1.75, 2)).toFixed(1);
-    const maxHealthyWeight = (24.9 * Math.pow(1.75, 2)).toFixed(1);
+    // Assuming a height of 69 inches (1.75 meters) for demonstration purposes
+    const heightInMeters = 69 * 0.0254;
+    const minHealthyWeight = (18.5 * Math.pow(heightInMeters, 2)).toFixed(1);
+    const maxHealthyWeight = (24.9 * Math.pow(heightInMeters, 2)).toFixed(1);
     setHealthyWeightRange(`${minHealthyWeight} kg - ${maxHealthyWeight} kg`);
   }, [bmi]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Card className="w-2/3">
+      <Card className="w-2/3 max-w-md">
         <CardHeader>
           <CardTitle>BMI Results</CardTitle>
         </CardHeader>
@@ -85,7 +85,6 @@ const BMICalculatorResults = () => {
               <li>Healthy BMI range: 18.5 kg/m² - 25 kg/m²</li>
               <li>Healthy weight for the height: {healthyWeightRange}</li>
               <li>BMI Prime: {(bmi / 25).toFixed(1)}</li>
-              <li>Ponderal Index: {(bmi / 10).toFixed(1)} kg/m³</li>
             </ul>
           </div>
           <Button onClick={() => router.push(`/fitness-advice?bmi=${bmi}&gender=${gender}`)} className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent">
