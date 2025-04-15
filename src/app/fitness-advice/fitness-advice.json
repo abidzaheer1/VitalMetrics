@@ -1,0 +1,27 @@
+
+[
+  {
+    "category": "Underweight",
+    "advice": "Focus on gaining healthy weight through a balanced diet and strength training.",
+    "healthRisks": "Increased risk of malnutrition, osteoporosis, and weakened immune system.",
+    "recommendedActions": "Consult a nutritionist, increase calorie intake with nutrient-dense foods, and engage in regular exercise."
+  },
+  {
+    "category": "Normal weight",
+    "advice": "Maintain a balanced diet and regular physical activity to stay healthy.",
+    "healthRisks": "Relatively low, but still important to maintain a healthy lifestyle.",
+    "recommendedActions": "Continue current healthy habits, focus on a varied diet, and engage in consistent exercise."
+  },
+  {
+    "category": "Overweight",
+    "advice": "Focus on losing weight through diet and exercise. Aim for a sustainable and healthy approach.",
+    "healthRisks": "Increased risk of heart disease, type 2 diabetes, and joint problems.",
+    "recommendedActions": "Reduce calorie intake, increase physical activity, and consult a healthcare professional for guidance."
+  },
+  {
+    "category": "Obese",
+    "advice": "Losing weight is important. Consult a healthcare professional for a safe and effective plan.",
+    "healthRisks": "Significantly increased risk of heart disease, type 2 diabetes, certain cancers, and other serious health conditions.",
+    "recommendedActions": "Consult a doctor or certified health professional, adopt a comprehensive weight loss plan, and make gradual lifestyle changes."
+  }
+]
