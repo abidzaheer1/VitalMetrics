@@ -38,61 +38,58 @@ const BMIGauge = ({ bmi }: { bmi: number }) => {
   };
 
   const gaugeColor = getGaugeColor(bmi);
-  const percentage = Math.min(bmi / 35, 1); // Cap at 35 for obese
-  const angle = (1 - percentage) * 90;
-  const x = 90 + 50 * Math.cos((angle * Math.PI) / 180);
-  const y = 100 - 50 * Math.sin((angle * Math.PI) / 180);
+  const percentage = Math.min(bmi / 40, 1); // Cap at 40 for obese
+  const angle = (1 - percentage) * 180;
+  const radius = 80;
+  const centerX = 100;
+  const centerY = 100;
+
+  const arrowX = centerX + radius * Math.cos((angle * Math.PI) / 180);
+  const arrowY = centerY + radius * Math.sin((angle * Math.PI) / 180);
 
   return (
     <div className="w-64">
-      <div className="relative">
-        <svg width="100%" height="100%" viewBox="0 0 180 120">
-          {/* Background Arc */}
-          <path
-            d="M 20 100 A 60 60, 0, 0, 1, 160 100"
-            stroke="#F0F0F0"
-            strokeWidth="12"
-            fill="none"
-          />
-          {/* Value Arc */}
-          <motion.path
-            d={`M 20 100 A 60 60, 0, 0, 1, ${x} ${y}`}
-            stroke={gaugeColor}
-            strokeWidth="12"
-            fill="none"
-            style={{
-              strokeDasharray: `${percentage * 100}, 100`,
-              strokeDashoffset: 0
-            }}
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          />
-          {/* Needle */}
-          <motion.line
-            x1="90"
-            y1="100"
-            x2={90 + 50 * Math.cos((1 - percentage) * Math.PI / 2)}
-            y2={100 - 50 * Math.sin((1 - percentage) * Math.PI / 2)}
-            stroke="#333"
-            strokeWidth="3"
-            strokeLinecap="round"
-            style={{ transformOrigin: '90px 100px' }}
-            initial={{ rotate: 0 }}
-            animate={{ rotate: -angle }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          />
-          {/* Central Pivot */}
-          <circle cx="90" cy="100" r="4" fill="#333" />
-          {/* BMI Value Text */}
-          <text x="90" y="50" textAnchor="middle" fontSize="24" fontWeight="bold" fill="#555">
-            {bmi.toFixed(1)}
-          </text>
-          <text x="90" y="70" textAnchor="middle" fontSize="12" fill="#777">
-            BMI
-          </text>
-        </svg>
-      </div>
+      <svg width="200" height="150">
+        {/* Background Arc */}
+        <path
+          d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 1 1 ${centerX + radius} ${centerY}`}
+          stroke="#F0F0F0"
+          strokeWidth="10"
+          fill="none"
+        />
+        {/* Value Arc */}
+        <motion.path
+          d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 ${angle > 180 ? 1 : 0} 1 ${arrowX} ${arrowY}`}
+          stroke={gaugeColor}
+          strokeWidth="10"
+          fill="none"
+          initial={{ strokeDasharray: '0, 500' }}
+          animate={{ strokeDasharray: `${percentage * 500}, 500` }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        />
+        {/* Needle */}
+        <motion.line
+          x1={centerX}
+          y1={centerY + 5}
+          x2={arrowX}
+          y2={arrowY}
+          stroke="#333"
+          strokeWidth="2"
+          strokeLinecap="round"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        />
+        {/* Central Pivot */}
+        <circle cx={centerX} cy={centerY + 5} r="3" fill="#333" />
+        {/* BMI Value Text */}
+        <text x={centerX} y={centerY - 30} textAnchor="middle" fontSize="20" fontWeight="bold" fill="#555">
+          {bmi.toFixed(1)}
+        </text>
+        <text x={centerX} y={centerY - 10} textAnchor="middle" fontSize="10" fill="#777">
+          BMI
+        </text>
+      </svg>
     </div>
   );
 };
