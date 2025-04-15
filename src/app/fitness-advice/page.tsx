@@ -5,8 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation';
 
-import fitnessData from './fitness-advice.json';
-
 interface FitnessAdvice {
   category: string;
   advice: string;
@@ -27,14 +25,16 @@ export default function FitnessAdvice() {
       setLoading(true);
       setError(null);
       try {
-        // Find advice based on BMI
-        const bmiCategory = getBmiCategory(bmi);
-        const adviceItem = fitnessData.find((item) => item.category === bmiCategory);
+        const response = await fetch(`/api/fitness-advice?bmi=${bmi}&gender=${gender}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
 
-        if (adviceItem) {
-          setAdvice(adviceItem);
+        if (data && data.advice) {
+          setAdvice(data.advice);
         } else {
-          setError("No specific advice found for your BMI category.");
+          setError("No specific advice found for your BMI and gender.");
         }
       } catch (e) {
         setError("Failed to load advice.");
@@ -46,13 +46,6 @@ export default function FitnessAdvice() {
 
     fetchFitnessAdvice();
   }, [bmi, gender]);
-
-  const getBmiCategory = (bmi: number): string => {
-    if (bmi < 18.5) return "Underweight";
-    if (bmi < 25) return "Normal weight";
-    if (bmi < 30) return "Overweight";
-    return "Obese";
-  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -89,4 +82,3 @@ export default function FitnessAdvice() {
     </div>
   );
 }
-

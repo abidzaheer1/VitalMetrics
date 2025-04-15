@@ -20,15 +20,10 @@ export default function BMICalculator() {
       const weightInKg = parseFloat(weight);
       const bmiValue = weightInKg / (heightInMeters * heightInMeters);
       setBmi(bmiValue);
+      // Redirect to the BMI results page with calculated BMI
+      router.push(`/bmi-results?bmi=${bmiValue.toFixed(2)}&gender=${gender}`);
     }
   };
-
-  const handleAnalyze = async () => {
-    if (bmi !== null) {
-      router.push(`/fitness-advice?bmi=${bmi}&gender=${gender}`);
-    }
-  };
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -56,16 +51,6 @@ export default function BMICalculator() {
             <Button onClick={calculateBMI} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary">
               Calculate BMI
             </Button>
-            {bmi !== null && (
-              <div className="mt-4">
-                <p className="text-xl font-semibold text-primary">
-                  Your BMI: {bmi.toFixed(2)}
-                </p>
-                <Button onClick={handleAnalyze} className="mt-2 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent">
-                  Analyze
-                </Button>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
