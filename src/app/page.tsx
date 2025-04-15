@@ -23,7 +23,7 @@ export default function Home() {
               Unlock your body's potential with our BMI calculator and personalized fitness advice.
             </CardDescription>
             <Link href="/gender-selection">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
                 Get Started
               </Button>
             </Link>

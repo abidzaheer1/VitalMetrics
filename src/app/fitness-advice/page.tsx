@@ -94,7 +94,7 @@ export default function FitnessAdvice() {
           </CardContent>
         </Card>
       )}
-      <Button className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent" onClick={() => window.history.back()}>
+      <Button className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent border border-primary hover:border-transparent" onClick={() => window.history.back()}>
         Back to Calculator
       </Button>
     </motion.div>

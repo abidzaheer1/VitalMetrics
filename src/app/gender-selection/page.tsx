@@ -39,10 +39,11 @@ export default function GenderSelection() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex space-x-4 justify-center">
-          <Button onClick={() => handleGenderSelect('Male')} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+          <Button onClick={() => handleGenderSelect('Male')} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
             Male
           </Button>
-          <Button onClick={() => handleGenderSelect('Female')} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+{/* Suggested code may be subject to a license. Learn more: ~LicenseLog:858548274. */}
+          <Button onClick={() => handleGenderSelect('Female')} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
             Female
           </Button>
         </CardContent>

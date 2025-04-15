@@ -4,17 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import { ChartContainer, ChartLegend, ChartStyle } from "@/components/ui/chart";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts';
 import { motion } from "framer-motion";
 
 const cardVariants = {
@@ -30,66 +19,35 @@ const cardVariants = {
 };
 
 const BMIGauge = ({ bmi }: { bmi: number }) => {
-  const getGaugeColor = (bmi: number) => {
-    if (bmi < 18.5) return '#FFCDD2'; // Underweight
-    if (bmi < 25) return '#A5D6A7'; // Normal
-    if (bmi < 30) return '#FFEB3B'; // Overweight
-    return '#F44336'; // Obese
+  const getCategory = (bmi: number) => {
+    if (bmi < 18.5) return { category: "Underweight", color: '#FFCDD2' };
+    if (bmi < 25) return { category: "Normal", color: '#A5D6A7' };
+    if (bmi < 30) return { category: "Overweight", color: '#FFEB3B' };
+    return { category: "Obese", color: '#F44336' };
   };
 
-  const gaugeColor = getGaugeColor(bmi);
-  const percentage = Math.min(bmi / 40, 1); // Cap at 40 for obese
-  const angle = (1 - percentage) * 180;
-  const radius = 80;
-  const centerX = 100;
-  const centerY = 100;
-
-  const arrowX = centerX + radius * Math.cos((angle * Math.PI) / 180);
-  const arrowY = centerY + radius * Math.sin((angle * Math.PI) / 180);
+  const { category, color } = getCategory(bmi);
 
   return (
-    <div className="w-64">
-      <svg width="200" height="150">
-        {/* Background Arc */}
-        <path
-          d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 1 1 ${centerX + radius} ${centerY}`}
-          stroke="#F0F0F0"
-          strokeWidth="10"
-          fill="none"
-        />
-        {/* Value Arc */}
-        <motion.path
-          d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 ${angle > 180 ? 1 : 0} 1 ${arrowX} ${arrowY}`}
-          stroke={gaugeColor}
-          strokeWidth="10"
-          fill="none"
-          initial={{ strokeDasharray: '0, 500' }}
-          animate={{ strokeDasharray: `${percentage * 500}, 500` }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-        />
-        {/* Needle */}
-        <motion.line
-          x1={centerX}
-          y1={centerY + 5}
-          x2={arrowX}
-          y2={arrowY}
-          stroke="#333"
-          strokeWidth="2"
-          strokeLinecap="round"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        />
-        {/* Central Pivot */}
-        <circle cx={centerX} cy={centerY + 5} r="3" fill="#333" />
-        {/* BMI Value Text */}
-        <text x={centerX} y={centerY - 30} textAnchor="middle" fontSize="20" fontWeight="bold" fill="#555">
-          {bmi.toFixed(1)}
-        </text>
-        <text x={centerX} y={centerY - 10} textAnchor="middle" fontSize="10" fill="#777">
-          BMI
-        </text>
-      </svg>
+    <div className="flex flex-col items-center">
+      <div
+        className="w-40 h-6 rounded-full overflow-hidden"
+        style={{
+          background: `linear-gradient(to right, 
+            ${category === "Underweight" ? color : '#ddd'} 0%, 
+            ${category === "Underweight" ? color : '#ddd'} ${Math.min(bmi, 18.5) / 40 * 100}%,
+            ${category === "Normal" ? color : '#ddd'} ${Math.max(0, Math.min(bmi, 25) - 18.5) / 40 * 100 + (18.5 / 40 * 100)}%,
+            ${category === "Normal" ? color : '#ddd'} ${Math.min(bmi, 25) / 40 * 100}%,
+            ${category === "Overweight" ? color : '#ddd'} ${Math.max(0, Math.min(bmi, 30) - 25) / 40 * 100 + (25 / 40 * 100)}%,
+            ${category === "Overweight" ? color : '#ddd'} ${Math.min(bmi, 30) / 40 * 100}%,
+            ${category === "Obese" ? color : '#ddd'} ${Math.max(0, bmi - 30) / 40 * 100 + (30 / 40 * 100)}%,
+            ${category === "Obese" ? color : '#ddd'} 100%)`
+        }}
+      />
+      <div className="text-center mt-2">
+        <p className="text-lg font-semibold">{bmi.toFixed(1)}</p>
+        <p className="text-sm text-muted-foreground">{category}</p>
+      </div>
     </div>
   );
 };
@@ -101,26 +59,6 @@ const BMICalculatorResults = () => {
   const gender = searchParams.get('gender') || 'Unspecified';
   const [bmiCategory, setBmiCategory] = useState("");
   const [healthyWeightRange, setHealthyWeightRange] = useState("");
-
-  const data = [
-    {
-      "BMI Category": "Underweight",
-      "BMI": 17.5,
-    },
-    {
-      "BMI Category": "Normal",
-      "BMI": 22,
-    },
-    {
-      "BMI Category": "Overweight",
-      "BMI": 27,
-    },
-    {
-      "BMI Category": "Obese",
-      "BMI": 32,
-    }
-  ]
-
 
   useEffect(() => {
     // Determine BMI category
@@ -163,25 +101,10 @@ const BMICalculatorResults = () => {
               <li>BMI Prime: {(bmi / 25).toFixed(1)}</li>
             </ul>
           </div>
-
-          <ChartContainer config={{ BMI: { label: "BMI" } }}>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="BMI Category" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="BMI" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-
-
-          <Button onClick={() => router.push(`/fitness-advice?bmi=${bmi}&gender=${gender}`)} className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent">
+          <Button onClick={() => router.push(`/fitness-advice?bmi=${bmi}&gender=${gender}`)} className="mt-4 bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-accent border border-primary hover:border-transparent">
             Get Fitness Advice
           </Button>
-          <Button className="mt-4 bg-secondary text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary" onClick={() => window.history.back()}>
+          <Button className="mt-4 bg-secondary text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary border border-primary hover:border-transparent" onClick={() => window.history.back()}>
             Back to Calculator
           </Button>
         </CardContent>
