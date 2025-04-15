@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -90,9 +91,14 @@ export default function BMICalculator() {
               onChange={(e) => setWeight(e.target.value)}
             />
           </div>
-          <Button onClick={calculateBMI} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+          <Button onClick={calculateBMI} className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
             Calculate BMI
           </Button>
+          <Link href="/">
+            <Button className="mt-2 bg-secondary text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary border border-primary hover:border-transparent">
+              Back to Home
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </motion.div>
