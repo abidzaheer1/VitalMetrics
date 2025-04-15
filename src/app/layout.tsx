@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'KBNU - project',
+  title: 'VTU M.tech - project',
   description: 'By Ayesha ',
 };
 
