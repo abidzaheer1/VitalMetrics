@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import {
   ChartContainer,
   ChartLegend,
-  ChartTitle,
   ChartStyle,
 } from "@/components/ui/chart";
 import {
@@ -146,7 +145,6 @@ const BMICalculatorResults = () => {
           </div>
 
           <ChartContainer config={{BMI: {label: "BMI"}}}>
-            <ChartTitle>BMI Categories</ChartTitle>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
