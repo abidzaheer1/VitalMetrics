@@ -15,7 +15,7 @@ export default function Home() {
           </CardTitle>
           <Monitor className="h-6 w-6 text-primary" />
         </CardHeader>
-        <CardContent className="flex justify-center">
+        <CardContent className="flex flex-col items-center">
           <div className="grid gap-4">
             <CardDescription className="text-center text-muted-foreground">
               Unlock your body's potential with our BMI calculator and personalized fitness advice.
@@ -26,10 +26,20 @@ export default function Home() {
               </Button>
             </Link>
           </div>
+          <div className="mt-8 border-t pt-8 w-full">
+            <h2 className="text-xl font-semibold mb-2">About</h2>
+            <p className="text-sm text-muted-foreground">
+              This BMI calculator is a project created by Ayesha, a Master of Technology student at KBN University.
+              It aims to provide a simple and effective way to understand your body mass index and receive personalized
+              fitness advice.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              The project utilizes Next.js for the frontend and leverages various UI components from Shadcn UI to provide a
+              modern and aesthetic user interface.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
   );
 }
-
-
