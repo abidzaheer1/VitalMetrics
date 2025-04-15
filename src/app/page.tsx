@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart } from "lucide-react";
+import { User } from "lucide-react";
 import { motion } from "framer-motion";
 
 const cardVariants = {
@@ -31,18 +31,20 @@ export default function Home() {
           <CardTitle className="text-2xl sm:text-3xl font-bold tracking-tight">
             VitalMetrics by Ayesha
           </CardTitle>
-          <Heart className="h-6 w-6 text-primary" />
+          <User className="h-6 w-6 text-primary" />
         </CardHeader>
         <CardContent className="flex flex-col items-center">
           <div className="grid gap-4">
             <CardDescription className="text-center text-muted-foreground">
               Unlock your body's potential with our BMI calculator and personalized fitness advice.
             </CardDescription>
-            <Link href="/gender-selection">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
-                Get Started
-              </Button>
-            </Link>
+            <div className="flex justify-center">
+              <Link href="/gender-selection">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary border border-primary hover:border-transparent">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
           </div>
           <motion.div
             className="mt-8 border-t pt-8 w-full"
@@ -77,4 +79,3 @@ export default function Home() {
     </motion.div>
   );
 }
-
